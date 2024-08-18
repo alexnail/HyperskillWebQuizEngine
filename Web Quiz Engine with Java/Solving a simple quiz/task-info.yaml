@@ -12,6 +12,18 @@ files:
   - name: build.gradle
     visible: true
     learner_created: false
+  - name: src/engine/controller/QuizController.java
+    visible: true
+    learner_created: true
+  - name: src/engine/model/QuizModel.java
+    visible: true
+    learner_created: true
+  - name: src/engine/model/QuizFeedbackModel.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/projects/91/stages/504/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sun, 18 Aug 2024 12:55:15 UTC"
 record: -1
