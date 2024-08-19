@@ -2,5 +2,8 @@ package engine.model;
 
 import java.util.List;
 
-public record QuizModel(String title, String text, List<String> options) {
+public record QuizModel(Integer id, String title, String text, List<String> options, Integer answer) {
+    public QuizOutputModel toOutput() {
+        return new QuizOutputModel(id, title, text, options);
+    }
 }
