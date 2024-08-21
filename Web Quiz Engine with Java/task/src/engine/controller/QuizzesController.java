@@ -1,6 +1,7 @@
 package engine.controller;
 
 import engine.exception.QuizNotFoundException;
+import engine.model.QuizAnswer;
 import engine.model.QuizFeedbackModel;
 import engine.model.QuizInputModel;
 import engine.model.QuizOutputModel;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +24,7 @@ public class QuizzesController {
     }
 
     @PostMapping
-    public QuizOutputModel createQuiz(@RequestBody QuizInputModel input) {
+    public QuizOutputModel createQuiz(@Valid @RequestBody QuizInputModel input) {
         return quizService.createQuiz(input);
     }
 
@@ -37,8 +39,8 @@ public class QuizzesController {
     }
 
     @PostMapping("/{id}/solve")
-    public QuizFeedbackModel solveQuiz(@PathVariable Integer id, @RequestParam Integer answer) {
-        return quizService.solve(id, answer);
+    public QuizFeedbackModel solveQuiz(@PathVariable Integer id, @RequestBody QuizAnswer quizAnswer) {
+        return quizService.solve(id, quizAnswer.answer());
     }
 
     @ExceptionHandler(QuizNotFoundException.class)

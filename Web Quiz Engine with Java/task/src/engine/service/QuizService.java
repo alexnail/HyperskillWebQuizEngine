@@ -6,6 +6,7 @@ import engine.model.QuizInputModel;
 import engine.model.QuizModel;
 import engine.model.QuizOutputModel;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +33,19 @@ public class QuizService {
         return quizzes.stream().map(QuizModel::toOutput).toList();
     }
 
-    public QuizFeedbackModel solve(Integer id, Integer answer) {
+    public QuizFeedbackModel solve(Integer id, List<Integer> answer) {
         if (id > 0 && id <= quizzes.size()) {
             QuizModel quiz = quizzes.get(id - 1);
-            return quiz.answer() == answer
-                    ? new QuizFeedbackModel(true, "Congratulations, you're right!")
-                    : new QuizFeedbackModel(false, "Wrong answer! Please, try again.");
+            if (CollectionUtils.isEmpty(answer) && CollectionUtils.isEmpty(quiz.answer())) {
+                return new QuizFeedbackModel(true, "Congratulations, you're right!");
+            } else if ( (CollectionUtils.isEmpty(answer) && !CollectionUtils.isEmpty(quiz.answer()) )
+            || (!CollectionUtils.isEmpty(answer) && CollectionUtils.isEmpty(quiz.answer())) ) {
+                return new QuizFeedbackModel(false, "Wrong answer! Please, try again.");
+            } else{
+                return quiz.answer().equals(answer)
+                        ? new QuizFeedbackModel(true, "Congratulations, you're right!")
+                        : new QuizFeedbackModel(false, "Wrong answer! Please, try again.");
+            }
         }
         throw new QuizNotFoundException(id);
     }
