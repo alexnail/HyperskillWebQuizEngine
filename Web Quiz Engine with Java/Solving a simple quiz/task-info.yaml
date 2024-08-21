@@ -21,7 +21,7 @@ files:
   - name: src/engine/model/QuizFeedbackModel.java
     visible: true
     learner_created: true
-feedback_link: https://hyperskill.org/projects/91/stages/504/implement#comment
+feedback_link: https://hyperskill.org/learn/step/8252#comment
 status: Solved
 feedback:
   message: Congratulations!
