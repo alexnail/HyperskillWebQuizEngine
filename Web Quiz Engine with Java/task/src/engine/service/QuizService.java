@@ -3,50 +3,59 @@ package engine.service;
 import engine.exception.QuizNotFoundException;
 import engine.model.QuizFeedbackModel;
 import engine.model.QuizInputModel;
-import engine.model.QuizModel;
 import engine.model.QuizOutputModel;
+import engine.repository.QuizRepository;
+import engine.service.mapper.QuizMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Service
 public class QuizService {
 
-    private final List<QuizModel> quizzes = new ArrayList<>();
+    private final QuizRepository repository;
+    private final QuizMapper mapper;
 
-    public QuizOutputModel createQuiz(QuizInputModel input) {
-        QuizModel quizModel = new QuizModel(quizzes.size() + 1, input.title(), input.text(), input.options(), input.answer());
-        quizzes.add(quizModel);
-        return quizModel.toOutput();
+    public QuizService(QuizRepository repository, QuizMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
     }
 
-    public QuizOutputModel getQuiz(Integer id) {
-        if (id > 0 && id <= quizzes.size()) {
-            return quizzes.get(id - 1).toOutput();
-        }
-        throw new QuizNotFoundException(id);
+    public QuizOutputModel createQuiz(QuizInputModel input) {
+        var quiz = repository.save(mapper.inputToEntity(input));
+        return mapper.toOutputModel(quiz);
+    }
+
+    public QuizOutputModel getQuiz(Long id) {
+        var quiz = repository.findById(id)
+                .orElseThrow(() -> new QuizNotFoundException(id));
+        return mapper.toOutputModel(quiz);
     }
 
     public List<QuizOutputModel> getAll() {
-        return quizzes.stream().map(QuizModel::toOutput).toList();
+        var quizzes = repository.findAll();
+        return StreamSupport.stream(quizzes.spliterator(), false)
+                .map(mapper::toOutputModel)
+                .toList();
     }
 
-    public QuizFeedbackModel solve(Integer id, List<Integer> answer) {
-        if (id > 0 && id <= quizzes.size()) {
-            QuizModel quiz = quizzes.get(id - 1);
-            if (CollectionUtils.isEmpty(answer) && CollectionUtils.isEmpty(quiz.answer())) {
-                return new QuizFeedbackModel(true, "Congratulations, you're right!");
-            } else if ( (CollectionUtils.isEmpty(answer) && !CollectionUtils.isEmpty(quiz.answer()) )
-            || (!CollectionUtils.isEmpty(answer) && CollectionUtils.isEmpty(quiz.answer())) ) {
-                return new QuizFeedbackModel(false, "Wrong answer! Please, try again.");
-            } else{
-                return quiz.answer().equals(answer)
-                        ? new QuizFeedbackModel(true, "Congratulations, you're right!")
-                        : new QuizFeedbackModel(false, "Wrong answer! Please, try again.");
-            }
+    public QuizFeedbackModel solve(Long id, List<Integer> answers) {
+        var quiz = repository.findById(id)
+                .orElseThrow(() -> new QuizNotFoundException(id));
+
+        var expectedAnswers = List.copyOf(quiz.getAnswers());
+        if (CollectionUtils.isEmpty(answers) && CollectionUtils.isEmpty(expectedAnswers)) {
+            return new QuizFeedbackModel(true, "Congratulations, you're right!");
+        } else if ((CollectionUtils.isEmpty(answers) && !CollectionUtils.isEmpty(expectedAnswers))
+                || (!CollectionUtils.isEmpty(answers) && CollectionUtils.isEmpty(expectedAnswers))) {
+            return new QuizFeedbackModel(false, "Wrong answer! Please, try again.");
+        } else {
+            return expectedAnswers.equals(answers)
+                    ? new QuizFeedbackModel(true, "Congratulations, you're right!")
+                    : new QuizFeedbackModel(false, "Wrong answer! Please, try again.");
         }
-        throw new QuizNotFoundException(id);
     }
+
 }

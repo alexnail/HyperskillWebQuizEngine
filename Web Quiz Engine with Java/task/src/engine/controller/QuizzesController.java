@@ -29,7 +29,7 @@ public class QuizzesController {
     }
 
     @GetMapping("/{id}")
-    public QuizOutputModel getQuiz(@PathVariable Integer id) {
+    public QuizOutputModel getQuiz(@PathVariable Long id) {
         return quizService.getQuiz(id);
     }
 
@@ -39,7 +39,7 @@ public class QuizzesController {
     }
 
     @PostMapping("/{id}/solve")
-    public QuizFeedbackModel solveQuiz(@PathVariable Integer id, @RequestBody QuizAnswer quizAnswer) {
+    public QuizFeedbackModel solveQuiz(@PathVariable Long id, @RequestBody QuizAnswer quizAnswer) {
         return quizService.solve(id, quizAnswer.answer());
     }
 
