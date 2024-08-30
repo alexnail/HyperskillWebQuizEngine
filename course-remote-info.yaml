@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://cogniterra.org/media/attachments/lesson/24621/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: "Sat, 24 Aug 2024 13:57:23 UTC"
+update_date: "Fri, 30 Aug 2024 21:32:19 UTC"
 stages:
   - id: 504
     step: 8252
@@ -163,10 +163,10 @@ topics:
       theory_id: 6216
     - title: Libraries
       theory_id: 8504
-    - title: Web development
-      theory_id: 13931
     - title: Frameworks
       theory_id: 6701
+    - title: Web development
+      theory_id: 13931
     - title: What is object-oriented programming
       theory_id: 3614
     - title: YAML
