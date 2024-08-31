@@ -42,9 +42,6 @@ files:
   - name: src/engine/model/QuizAnswer.java
     visible: true
     learner_created: true
-  - name: test/engine/controller/QuizzesControllerTest.java
-    visible: true
-    learner_created: true
   - name: src/engine/controller/UserController.java
     visible: true
     learner_created: true
@@ -72,6 +69,12 @@ files:
   - name: src/engine/exception/NonUniqueUserException.java
     visible: true
     learner_created: true
+  - name: src/engine/exception/QuizDeleteNotAuthorizedException.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8256#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sat, 31 Aug 2024 11:14:17 UTC"
 record: -1

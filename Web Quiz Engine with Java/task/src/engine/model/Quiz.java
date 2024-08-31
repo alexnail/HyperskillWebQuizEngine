@@ -25,6 +25,8 @@ public class Quiz {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Integer> answers;
 
+    private String createdBy;
+
     public Long getId() {
         return id;
     }
@@ -63,5 +65,13 @@ public class Quiz {
 
     public void setAnswers(List<Integer> answers) {
         this.answers = answers;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

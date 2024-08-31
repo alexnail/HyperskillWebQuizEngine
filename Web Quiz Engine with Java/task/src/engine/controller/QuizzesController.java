@@ -1,5 +1,6 @@
 package engine.controller;
 
+import engine.exception.QuizDeleteNotAuthorizedException;
 import engine.exception.QuizNotFoundException;
 import engine.model.QuizAnswer;
 import engine.model.QuizFeedbackModel;
@@ -43,8 +44,23 @@ public class QuizzesController {
         return quizService.solve(id, quizAnswer.answer());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteQuiz(@PathVariable Long id) {
+        QuizOutputModel quiz = quizService.deleteQuiz(id);
+        if (quiz != null) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @ExceptionHandler(QuizNotFoundException.class)
     public ResponseEntity handleQuizNotFound() {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(QuizDeleteNotAuthorizedException.class)
+    public ResponseEntity handleQuizDeleteNotAuthorized() {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }

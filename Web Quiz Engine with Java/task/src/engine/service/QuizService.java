@@ -1,11 +1,13 @@
 package engine.service;
 
+import engine.exception.QuizDeleteNotAuthorizedException;
 import engine.exception.QuizNotFoundException;
 import engine.model.QuizFeedbackModel;
 import engine.model.QuizInputModel;
 import engine.model.QuizOutputModel;
 import engine.repository.QuizRepository;
 import engine.service.mapper.QuizMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -24,7 +26,9 @@ public class QuizService {
     }
 
     public QuizOutputModel createQuiz(QuizInputModel input) {
-        var quiz = repository.save(mapper.inputToEntity(input));
+        var quiz = repository.save(
+                mapper.inputToEntity(input,
+                SecurityContextHolder.getContext().getAuthentication().getName()));
         return mapper.toOutputModel(quiz);
     }
 
@@ -58,4 +62,16 @@ public class QuizService {
         }
     }
 
+    public QuizOutputModel deleteQuiz(Long id) throws QuizDeleteNotAuthorizedException {
+        var quiz = repository.findById(id).orElse(null);
+        if (quiz == null) {
+            return null;
+        }
+        if (quiz.getCreatedBy().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+            repository.delete(quiz);
+            return mapper.toOutputModel(quiz);
+        } else {
+            throw new QuizDeleteNotAuthorizedException();
+        }
+    }
 }
