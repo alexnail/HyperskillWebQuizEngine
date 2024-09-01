@@ -7,12 +7,13 @@ import engine.model.QuizInputModel;
 import engine.model.QuizOutputModel;
 import engine.repository.QuizRepository;
 import engine.service.mapper.QuizMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 @Service
 public class QuizService {
@@ -38,11 +39,9 @@ public class QuizService {
         return mapper.toOutputModel(quiz);
     }
 
-    public List<QuizOutputModel> getAll() {
-        var quizzes = repository.findAll();
-        return StreamSupport.stream(quizzes.spliterator(), false)
-                .map(mapper::toOutputModel)
-                .toList();
+    public Page<QuizOutputModel> getAll(Integer page) {
+        var quizPage = repository.findAll(PageRequest.of(page, 10));
+        return quizPage.map(mapper::toOutputModel);
     }
 
     public QuizFeedbackModel solve(Long id, List<Integer> answers) {

@@ -7,12 +7,12 @@ import engine.model.QuizFeedbackModel;
 import engine.model.QuizInputModel;
 import engine.model.QuizOutputModel;
 import engine.service.QuizService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/quizzes")
@@ -35,8 +35,8 @@ public class QuizzesController {
     }
 
     @GetMapping
-    public List<QuizOutputModel> getAllQuizzes() {
-        return quizService.getAll();
+    public Page<QuizOutputModel> getAllQuizzes(@RequestParam("page") Integer page) {
+        return quizService.getAll(page);
     }
 
     @PostMapping("/{id}/solve")
