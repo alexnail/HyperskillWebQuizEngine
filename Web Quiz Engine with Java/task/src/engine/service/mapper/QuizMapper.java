@@ -1,6 +1,7 @@
 package engine.service.mapper;
 
-import engine.model.Quiz;
+import engine.entity.Quiz;
+import engine.model.QuizFeedbackModel;
 import engine.model.QuizInputModel;
 import engine.model.QuizOutputModel;
 import org.springframework.stereotype.Component;
@@ -19,5 +20,13 @@ public class QuizMapper {
 
     public QuizOutputModel toOutputModel(Quiz quiz) {
         return new QuizOutputModel(quiz.getId(), quiz.getTitle(), quiz.getText(), quiz.getOptions());
+    }
+
+    public QuizFeedbackModel success() {
+        return new QuizFeedbackModel(true, "Congratulations, you're right!");
+    }
+
+    public QuizFeedbackModel failure() {
+        return new QuizFeedbackModel(false, "Wrong answer! Please, try again.");
     }
 }

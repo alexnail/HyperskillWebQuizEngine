@@ -1,6 +1,6 @@
 package engine.repository;
 
-import engine.model.Quiz;
+import engine.entity.Quiz;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

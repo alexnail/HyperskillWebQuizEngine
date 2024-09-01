@@ -1,7 +1,7 @@
 package engine.service;
 
 import engine.exception.NonUniqueUserException;
-import engine.mode.UserAdapter;
+import engine.model.UserAdapter;
 import engine.model.UserDTO;
 import engine.repository.UserRepository;
 import engine.service.mapper.UserMapper;

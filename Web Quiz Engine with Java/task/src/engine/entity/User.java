@@ -1,4 +1,4 @@
-package engine.model;
+package engine.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

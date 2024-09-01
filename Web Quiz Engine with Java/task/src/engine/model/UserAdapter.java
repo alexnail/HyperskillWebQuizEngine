@@ -1,6 +1,6 @@
-package engine.mode;
+package engine.model;
 
-import engine.model.User;
+import engine.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

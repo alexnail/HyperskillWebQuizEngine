@@ -18,7 +18,7 @@ files:
   - name: src/engine/config/SecurityConfig.java
     visible: true
     learner_created: true
-  - name: src/engine/model/User.java
+  - name: src/engine/entity/User.java
     visible: true
     learner_created: true
   - name: src/engine/service/mapper/QuizMapper.java
@@ -33,7 +33,7 @@ files:
   - name: src/engine/service/QuizService.java
     visible: true
     learner_created: true
-  - name: src/engine/mode/UserAdapter.java
+  - name: src/engine/model/UserAdapter.java
     visible: true
     learner_created: true
   - name: src/engine/controller/QuizzesController.java
@@ -48,10 +48,10 @@ files:
   - name: src/engine/controller/UserController.java
     visible: true
     learner_created: true
-  - name: src/engine/exception/QuizDeleteNotAuthorizedException.java
+  - name: src/engine/exception/QuizDeleteForbiddenException.java
     visible: true
     learner_created: true
-  - name: src/engine/model/Quiz.java
+  - name: src/engine/entity/Quiz.java
     visible: true
     learner_created: true
   - name: src/engine/exception/QuizNotFoundException.java
@@ -72,6 +72,25 @@ files:
   - name: src/engine/model/QuizAnswer.java
     visible: true
     learner_created: true
+  - name: src/engine/model/CompletedQuizModel.java
+    visible: true
+    learner_created: true
+  - name: src/engine/repository/CompletionRepository.java
+    visible: true
+    learner_created: true
+  - name: src/engine/entity/QuizCompletion.java
+    visible: true
+    learner_created: true
+  - name: src/engine/service/mapper/CompletionMapper.java
+    visible: true
+    learner_created: true
+  - name: src/engine/exception/QuizCompletionsUnauthorizedException.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8257#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">Hyperskill</a>
+    to continue learning.
+  time: "Sun, 01 Sep 2024 10:59:11 UTC"
 record: -1

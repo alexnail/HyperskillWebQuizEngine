@@ -1,6 +1,6 @@
 package engine.service.mapper;
 
-import engine.model.User;
+import engine.entity.User;
 import engine.model.UserDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

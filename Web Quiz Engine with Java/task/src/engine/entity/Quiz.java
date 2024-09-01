@@ -1,4 +1,4 @@
-package engine.model;
+package engine.entity;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;

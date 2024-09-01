@@ -1,15 +1,15 @@
 package engine.controller;
 
-import engine.exception.QuizDeleteNotAuthorizedException;
+import engine.exception.QuizCompletionsUnauthorizedException;
+import engine.exception.QuizDeleteForbiddenException;
 import engine.exception.QuizNotFoundException;
-import engine.model.QuizAnswer;
-import engine.model.QuizFeedbackModel;
-import engine.model.QuizInputModel;
-import engine.model.QuizOutputModel;
+import engine.model.*;
 import engine.service.QuizService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,9 +39,19 @@ public class QuizzesController {
         return quizService.getAll(page);
     }
 
+    @GetMapping("/completed")
+    public Page<CompletedQuizModel> getCompletedQuizzes(@RequestParam("page") Integer page,
+                                                        @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new QuizCompletionsUnauthorizedException();
+        }
+        return quizService.getCompletedQuizzes(userDetails.getUsername(), page);
+    }
+
     @PostMapping("/{id}/solve")
-    public QuizFeedbackModel solveQuiz(@PathVariable Long id, @RequestBody QuizAnswer quizAnswer) {
-        return quizService.solve(id, quizAnswer.answer());
+    public QuizFeedbackModel solveQuiz(@PathVariable Long id, @RequestBody QuizAnswer quizAnswer,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
+        return quizService.solve(id, quizAnswer.answer(), userDetails.getUsername());
     }
 
     @DeleteMapping("/{id}")
@@ -59,8 +69,13 @@ public class QuizzesController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(QuizDeleteNotAuthorizedException.class)
-    public ResponseEntity handleQuizDeleteNotAuthorized() {
+    @ExceptionHandler(QuizDeleteForbiddenException.class)
+    public ResponseEntity handleQuizDeleteForbidden() {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(QuizCompletionsUnauthorizedException.class)
+    public ResponseEntity handleQuizCompletionsUnauthorized() {
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
